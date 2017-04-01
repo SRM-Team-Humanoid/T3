@@ -2,7 +2,7 @@
 import socket
 import rospy
 from std_msgs.msg import String
-import netifaces as mi
+import netifaces as ni
 
 
 if __name__ == '__main__':
@@ -12,7 +12,7 @@ if __name__ == '__main__':
         prev = 0
         s = socket.socket()         # Create a socket object
         done_indices = []
-        TCP_IP = ni.addresses('wlan0')[2][0]['addr'] # Get local machine name
+        TCP_IP = ni.ifaddresses('wlan0')[2][0]['addr'] # Get local machine name
         port = 7003      # Reserve a port for your service.
         s.bind((TCP_IP, port))        # Bind to the port
         s.listen(5)                 # Now wait for client connection.
