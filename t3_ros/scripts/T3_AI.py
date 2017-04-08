@@ -146,15 +146,51 @@ def getminmax(board):
 
 read = False
 input = 0
-
+start = 0
+if_reset = 0
 
 
 
 def reader(data):
-    print "Bhai Mera Swag"
-    global read,input
-    input = int(data.data)
-    read = True
+    global read,input,start,if_reset
+    try:
+        print "Bhai Mera Swag"
+        input = int(data.data)
+        print input
+        read = True
+    except:
+        read=True
+        print "get"
+        start = data.data[0]
+        if start == 'o':
+            if_reset=1
+            start = 1
+        else:
+            if_reset=2
+            start = 2
+
+
+
+
+def reset(choice):
+    global splayer,player,board,init,read
+    board = [[0 for x in range(3)] for x in range(3)]
+
+    print("Select Option - ")
+    print("1)Start First")
+    print("2)Start Second")
+    init = True
+    read = False
+    if choice==2:
+        splayer = 1
+        player = 1
+    elif choice ==1:
+        splayer = -1
+        player = -1
+    else:
+        print "Invalid"
+        exit()
+
 
 
 rospy.init_node('AI')
@@ -168,7 +204,10 @@ board = [[0 for x in range(3)] for x in range(3)]
 print("Select Option - ")
 print("1)Start First")
 print("2)Start Second")
-choice = int(raw_input())
+
+while start==0:
+    pass
+choice = start
 init = True
 if choice == 2:
     splayer = 1
@@ -179,15 +218,30 @@ elif choice == 1:
 else:
     print "Invalid"
     exit()
-while (terminal(board) == 0):
+
+print "done1"
+read = False
+if_reset = 0
+
+
+
+while (True):
+    print "done2"
+    if if_reset>0:
+        reset(if_reset)
+        if_reset=0
     disp(board)
+    print "done3"
     if player == 1:
+        print "done4"
         if init:
             x = 0
         else:
             x = getminmax(board)
-            writer.publish(str(x+1)+'O')
-    if player == -1:
+            writer.publish(str(x+1))
+        print "done5"
+    elif player == -1:
+        print "done6"
         while not read:
             pass
         x = input - 1
@@ -195,21 +249,30 @@ while (terminal(board) == 0):
         if x not in actions(board):
             print ("Invalid Move. Try Again")
             continue
+        print "done7"
     board = update(board, player, x)
     player *= -1
     init = False
-
-disp(board)
-if (utility(board) == -1):
-    print "Computer Wins!"
-if (utility(board) == 1):
-    print "You Win!"
-if (utility(board) == 0):
-    print "Draw"
-
-
-
+    if (terminal(board) != 0):
+        disp(board)
+        if (utility(board) == -1):
+            print "Computer Wins!"
+        if (utility(board) == 1):
+            print "You Win!"
+        if (utility(board) == 0):
+            print "Draw"
+        while if_reset==0:
+            pass
 rospy.spin()
+
+
+
+
+
+
+
+
+
 
 
 

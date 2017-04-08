@@ -130,6 +130,29 @@ def getminmax(board):
 			move = action
 	return move
 
+
+def reset():
+	global splayer
+	global player
+	global board
+	global init
+	board = [[0 for x in range(3)] for x in range(3)]
+
+	print("Select Option - ")
+	print("1)Start First")
+	print("2)Start Second")
+	choice = int(raw_input())
+	init = True
+	if choice==2:
+		splayer = 1
+		player = 1
+	elif choice ==1:
+		splayer = -1
+		player = -1
+	else:
+		print "Invalid"
+		exit()
+
 board = [[0 for x in range(3)] for x in range(3)]
 
 print("Select Option - ")
@@ -155,6 +178,9 @@ while (terminal(board)==0):
 			x = getminmax(board)
 	if player==-1:
 		x = int(raw_input())-1
+		if x < 0:
+			reset()
+			continue
 		if x not in actions(board):
 			print ("Invalid Move. Try Again")
 			continue
