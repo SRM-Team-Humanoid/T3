@@ -238,7 +238,7 @@ while (True):
             x = 0
         else:
             x = getminmax(board)
-            writer.publish(str(x+1))
+        writer.publish(str(x+1))
         print "done5"
     elif player == -1:
         print "done6"
@@ -257,10 +257,12 @@ while (True):
         disp(board)
         if (utility(board) == -1):
             print "Computer Wins!"
+            writer.publish("win")
         if (utility(board) == 1):
             print "You Win!"
         if (utility(board) == 0):
             print "Draw"
+            writer.publish("win")
         while if_reset==0:
             pass
 rospy.spin()

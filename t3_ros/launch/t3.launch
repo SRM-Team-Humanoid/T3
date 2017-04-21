@@ -1,0 +1,5 @@
+<launch>
+	<node pkg="t3_ros" name="socket" type="server.py" output="screen"/>
+	<node pkg="t3_ros" name="core" type="T3_AI.py" output="screen"/>
+	<node pkg="t3_ros" name="action" type="rMinus2.py" output="screen"/>
+</launch>
